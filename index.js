@@ -63,11 +63,11 @@ app.get('/stats', (req, res) => {
         wins: _.filter(list, {'attacker_outcome': 'win'}).length,
         loss: _.filter(list, {'attacker_outcome': 'loss'}).length
       },
-      battle_types: _.transform(_.uniqBy(list, 'battle_type'), (result, o) => result.push(o.battle_type), []),
+      battle_types: _.remove(_.transform(_.uniqBy(list, 'battle_type'), (result, o) => result.push(o.battle_type), []), (n) => n !== ''),
       defender_size: {
         min: _.minBy(list, 'defender_size').defender_size,
         max: _.maxBy(list, 'defender_size').defender_size,
-        average: _.meanBy(list, 'defender_size')
+        average: parseInt(_.meanBy(list, 'defender_size'))
       }
     };
     res.send(stats);
