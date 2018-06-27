@@ -1,0 +1,21 @@
+{
+  "name": "goftb",
+  "version": "1.0.0",
+  "description": "Game of Thrones Battle API",
+  "main": "index.js",
+  "scripts": {
+    "db:start": "mongod",
+    "db:import": "mongoimport -d goftb -c battles --drop --type csv --headerline --file ./data/battles.csv",
+    "serve": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Laimonas",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "mongodb": "^3.1.0",
+    "mongoose": "^5.1.7",
+    "nodemon": "^1.17.5"
+  }
+}
