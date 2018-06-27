@@ -74,8 +74,31 @@ app.get('/stats', (req, res) => {
   });
 });
 
+// search for <king, type, location>
 app.get('/search', (req, res) => {
-  res.send('hello world');
+  let selectQuery = {}, accepted = ['king', 'type', 'location'];
+
+  if (accepted.some(v => _.keys(req.query).includes(v))) {
+    selectQuery = {
+      $and: []
+    };
+
+    if (req.query.king) {
+      selectQuery.$and.push({$or: [{defender_king: req.query.king}, {attacker_king: req.query.king}]});
+    }
+
+    if (req.query.location) {
+      selectQuery.$and.push({location: req.query.location});
+    }
+
+    if (req.query.type) {
+      selectQuery.$and.push({battle_type: req.query.type});
+    }
+  }
+
+  Battle.find(selectQuery).lean().exec((err, list) => {
+    err ? res.send({err}) : res.send(list);
+  });
 });
 
 app.use((req, res) => {
